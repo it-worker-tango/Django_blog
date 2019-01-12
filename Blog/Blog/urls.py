@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from main.views import index # 将views中定义个函数引入进来
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', index, name='index'), #定义首页的路由规则
 ]
