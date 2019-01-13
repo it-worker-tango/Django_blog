@@ -15,7 +15,9 @@
 	<!--<script type="text/javascript" src="{% static 'plugin/jquery.page.js' %}"></script>-->
 	<!--<script src="{% static 'js/common.js' %}"></script>-->
 	<!--<script src="{% static 'js/snowy.js' %}"></script>-->
-
+	<!--editormd-->
+	<link href="{% static 'css/editormd.min.css' %}" rel="stylesheet">
+  	<link href="{% static 'css/editormd.preview.css' %}" rel="stylesheet">
 	<body>
 		<div class="w_header">
 			<div class="container">
@@ -23,13 +25,15 @@
 					<a href="#" class="w_logo"></a>
 					<span class="w_header_nav">
 					<ul>
-						<li><a href="" class="active">首页</a></li>
-						<li><a href="about.html">关于</a></li>
-						<li><a href="article.html">成长</a></li>
-						<li><a href="">学习</a></li>
-						<li><a href="">娱乐</a></li>
-						<li><a href="moodList.html">说说</a></li>
-						<li><a href="comment.html">留言</a></li>
+						<li><a href="{% url 'index' %}" >首页</a></li>
+						{% for category in category_list %}
+						<li><a href="{% url 'selectCategory' category.id %}"
+							{% if isActive == category.id %}
+							class="active"
+							{% endif %}
+							>{{category.name}}</a></li>
+						{% endfor %}
+						
 					</ul>
 				</span>
 					<div class="w_search">
@@ -65,19 +69,9 @@
 							</div>
 							<div class="panel-body">
 								<div class="labelList">
-									<a class="label label-default">java</a>
-									<a class="label label-default">tomcat负载均衡</a>
-									<a class="label label-default">panel</a>
-									<a class="label label-default" href="/tag/jQuery">jQuery</a>
-									<a class="label label-default" href="/tag/jQuery选择器">jQuery选择器</a>
-									<a class="label label-default" href="/tag/linux">linux</a>
-									<a class="label label-default" href="/tag/Nginx">Nginx</a>
-									<a class="label label-default" href="/tag/linux文件类型">linux文件类型</a>
-									<a class="label label-default" href="/tag/chrome请求两次">chrome</a>
-									<a class="label label-default" href="/tag/Redis">Redis</a>
-									<a class="label label-default" href="/tag/spring">spring</a>
-									<a class="label label-default" href="/tag/tomcat">tomcat</a>
-									<a class="label label-default" href="/tag/SyntaxHighlighter">SyntaxHighlighter</a>
+									{% for tag in tags %}
+									<a class="label label-default" href="/tag/jQuery选择器">{{tag.name}}</a>
+									{% endfor %}
 								</div>
 							</div>
 						</div>
@@ -88,36 +82,11 @@
 							</div>
 							<div class="panel-body">
 								<ul class="list-unstyled sidebar">
+									{% for article in article_list_new %}
 									<li>
-										<a href="/post/04928311">排序算法之冒泡排序 － java实现</a>
+										<a href="/post/04928311">{{article.title}}</a>
 									</li>
-									<li>
-										<a href="/post/32097759">快速搭建基于二进制日志文件的 mysql 复制</a>
-									</li>
-									<li>
-										<a href="/post/09196557">web 服务器负载均衡教程，快速搭建高可用服务器集群</a>
-									</li>
-									<li>
-										<a href="/post/20654391">使用 redis 和 spring-session 实现 tomcat、glassfish 等 web 服务器集群 session 共享</a>
-									</li>
-									<li>
-										<a href="/post/41501569">使用 Nginx 实现 tomcat、glassfish 等 web 服务器负载均衡</a>
-									</li>
-									<li>
-										<a href="/post/89658700">mysql 复制（replication）基础概念和应用场景简介</a>
-									</li>
-									<li>
-										<a href="/post/03088922">redis 单节点在 Linux 生产环境的安装和简单配置</a>
-									</li>
-									<li>
-										<a href="/post/05203355">使用 jQuery 的 val() 方法来获取以及设置表单元素值</a>
-									</li>
-									<li>
-										<a href="/post/03120718">使用 jQuery 的 removeProp() 方法来删除元素的特性（property）</a>
-									</li>
-									<li>
-										<a href="/post/37454977">使用 jQuery 的 prop() 方法来获取以及设置元素的特性（property）</a>
-									</li>
+									{% endfor %}
 								</ul>
 							</div>
 						</div>
@@ -129,21 +98,11 @@
 							<div class="panel-body">
 								<div class="newContent">
 									<ul class="list-unstyled sidebar shiplink">
+										{% for url in links %}
 										<li>
-											<a href="https://www.baidu.com/" target="_blank">百度</a>
+											<a href="{{url.url}}" target="_blank">{{url.name}}</a>
 										</li>
-										<li>
-											<a href="https://www.oschina.net/" target="_blank">开源中国</a>
-										</li>
-										<li>
-											<a href="http://www.ulewo.com/" target="_blank">有乐网</a>
-										</li>
-										<li>
-											<a href="http://www.sina.com.cn/" target="_blank">新浪网</a>
-										</li>
-										<li>
-											<a href="http://www.qq.com/" target="_blank">腾讯网</a>
-										</li>
+										{% endfor %}										
 									</ul>
 								</div>
 							</div>
@@ -169,6 +128,14 @@
 			</div>
 		</div>
 	</body>
+	<script src="{% static 'js/editormd.min.js'%}"></script>
+	<script src="{% static 'js/lib/marked.min.js'%}"></script>
+	<script src="{% static 'js/lib/prettify.min.js'%}"></script>
+	<script src="{% static 'js/lib/raphael.min.js'%}"></script>
+	<script src="{% static 'js/lib/underscore.min.js'%}"></script>
+	<script src="{% static 'js/lib/sequence-diagram.min.js'%}"></script>
+	<script src="{% static 'js/lib/flowchart.min.js'%}"></script>
+	<script src="{% static 'js/lib/jquery.flowchart.min.js'%}"></script>
 	<script type="text/javascript">
 		var $backToTopEle = $('<a href="javascript:void(0)" class="Hui-iconfont toTop" title="返回顶部" alt="返回顶部" style="display:none">^</a>').appendTo($("body")).click(function() {
 			$("html, body").animate({ scrollTop: 0 }, 120);
@@ -187,6 +154,21 @@
 			$(window).on("scroll", backToTopFun);
 			backToTopFun();
 		});
+		$(function () {
+			// js 解析markdown
+			editormd.markdownToHTML("content", {
+				//htmlDecode      : "style,script,iframe",  // you can filter tags decode
+				emoji           : true,
+				taskList        : true,
+				tex             : true,  // 默认不解析
+				flowChart       : true,  // 默认不解析
+				sequenceDiagram : true,  // 默认不解析
+			});
+
+			$(".reference-link").each(function (i,obj) {
+				console.log(obj)
+			})
+		})
 	</script>
 
 </html>

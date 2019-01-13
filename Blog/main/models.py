@@ -1,4 +1,5 @@
 from django.db import models
+from mdeditor.fields import MDTextField
 
 # Create your models here.
 
@@ -40,9 +41,11 @@ class Tag(models.Model):
 
 class Article(models.Model):
     '''博客内容'''
+    category = models.ForeignKey("Category", verbose_name='分类', on_delete=models.CASCADE, blank=True, null=True)
     title = models.CharField(verbose_name='标题', max_length=50)
     tags = models.ManyToManyField("Tag", verbose_name="标签") #一个文章可以有多个标签，所以选择多对多
-    content = models.CharField(verbose_name='文章内容', max_length=50) # 这里暂时用这个，后面要用markdow格式，这里需要修改
+    #content = models.CharField(verbose_name='文章内容', max_length=50) # 这里暂时用这个，后面要用markdow格式，这里需要修改
+    content = MDTextField() # 使用markdown格式
     add_date = models.DateField(verbose_name='添加时间', auto_now=True)
     view_count = models.IntegerField(verbose_name='阅读量')
     comments = models.IntegerField(verbose_name='留言量')
