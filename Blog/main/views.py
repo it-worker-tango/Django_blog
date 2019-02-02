@@ -41,12 +41,15 @@ def index(request):
 
 
 def readArticle(request, id):
-    template_name = "article_detail.html" # 要显示的模板名称
+    template_name = "article.html" # 要显示的模板名称
     category_list = getCategory() # 获取Category数据
     tags= getTags() # 获取所有的标签
     article_list_new = Article.objects.all().order_by('-add_date')[:10] # 根据发布时间来排序,展现前10条
     links = getLinks() # 获取友情链接
     article = Article.objects.get(id = id )
+
+    print("文章ID:", article.id)
+    print("文章分类:", article.category)
     
     return render(request, template_name,{'article':article, 'tags':tags, 'category_list':category_list, 'article_list_new':article_list_new, 'links':links})
 

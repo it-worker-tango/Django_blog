@@ -49,6 +49,8 @@ class Article(models.Model):
     add_date = models.DateField(verbose_name='添加时间', auto_now=True)
     view_count = models.IntegerField(verbose_name='阅读量')
     comments = models.IntegerField(verbose_name='留言量')
+    user_name = models.CharField(verbose_name='作者', max_length=50,default="Tango", null=True)
+    isTop = models.BooleanField(verbose_name='置顶',default=True)
 
     def __str__(self):
         return self.title
